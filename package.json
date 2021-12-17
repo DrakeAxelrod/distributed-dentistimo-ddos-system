@@ -1,0 +1,27 @@
+{
+  "name": "team-16-ddos-system",
+  "version": "1.0.0",
+  "description": "DDoS the main System",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@git.chalmers.se:courses/dit355/test-teams-formation/team-16/team-16-ddos-system.git"
+  },
+  "keywords": [
+    "DDoS"
+  ],
+  "author": "Team-16",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "mqtt": "^4.2.8",
+    "simple-ddos": "^2.0.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
